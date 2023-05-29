@@ -1,0 +1,1 @@
+export const orderByAdapter = (val) => val === 'asc' ? 1 : -1
