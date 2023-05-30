@@ -8,7 +8,11 @@ const router = new Router();
 
 router.get("/article", BlogController.showAllArticles);
 router.post("/create", authMiddleware, BlogController.create);
+
 router.get('/articles-to-moderate', adminMiddleware, BlogController.articlesToModerate);
+router.post('/article-approve', adminMiddleware, BlogController.approveArticle);
+router.post('/decline-article', adminMiddleware, BlogController.deleteArticle);
+
 router.get("/article/:id", BlogController.showArticleById);
 router.post("/delete", authMiddleware, BlogController.delete);
 router.get("/change/:id", BlogController.showArticleById);

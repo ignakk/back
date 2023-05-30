@@ -17,6 +17,7 @@ export const adminMiddleware = (req, res, next) => {
         }
 
         req.user = userData;
+
         next();
     } catch (e) {
         res.status(401).json(e.message);

@@ -6,7 +6,7 @@ class BlogController {
     async create(req, res) {
         try {
             const {title, text, avatar} = req.body;
-            const article = await BlogService.create({title, text, avatar});
+            const article = await BlogService.create(req.user.email, title, text, avatar);
             return res.json(article);
         } catch (e) {
             res.status(400).json(e.message)
@@ -56,9 +56,30 @@ class BlogController {
 
     async articlesToModerate(req, res) {
         try {
-            const article = await BlogService.showArticlesToModerate();
+            const { page } = req.query;
+            const article = await BlogService.showArticlesToModerate(page);
             return res.json(article);
         } catch (e) {
+            res.status(400).json(e.message)
+        }
+    }
+
+    async approveArticle(req, res) {
+        try {
+            const {id} = req.body;
+            const response = await BlogService.approveArticle(id);
+            return res.json(response);
+        } catch (error) {
+            res.status(400).json(e.message)
+        }
+    }
+
+    async deleteArticle(req, res) {
+        try {
+            const {id} = req.body;
+            const response = await BlogService.deleteArticle(id);
+            return res.json(response);
+        } catch (error) {
             res.status(400).json(e.message)
         }
     }

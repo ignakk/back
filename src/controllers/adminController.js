@@ -32,7 +32,6 @@ class adminController {
             res.cookie("refreshToken", user.refreshToken, {maxAge: 30*24*60*60*1000, httpOnly: true});
             return res.json(user);
         } catch (e) {
-            console.log('error: ', e);
             res.status(401).json("Пользователь не авторизован");
         }
        

@@ -1,15 +1,13 @@
 import { orderByAdapter } from "../adapters/index.js";
-import { blogModel } from "../models/index.js"
+import { blogModel, AdminModel } from "../models/index.js"
 
 
 class BlogService {
 
-    async create(title, text, avatar) {
-        if(!title || text || avatar) {
-            throw new Error("Убедитесь что все поля заполнены!")
-        }
+    async create(email, title, text, avatar) {
+        const user = await AdminModel.findOne({email});
 
-        const blog = await new blogModel(title, text, avatar, false);
+        const blog = await new blogModel({name: user.email, title, text, isVisible: false, avatar});
         blog.save();
 
         return {
@@ -26,12 +24,30 @@ class BlogService {
         return articles.length > 0 ? articles.filter((item) => item.title.toLowerCase().startsWith(filterBy) && !!item.isVisible) : [];
     }
 
-    async showArticlesToModerate() {
+    async showArticlesToModerate(page = 1) {
         const skip = (parseInt(page) - 1) * 8;
 
         const articles = (await blogModel.find().limit(8).skip(skip));
 
         return articles.length > 0 ? articles.filter((item) => !item.isVisible) : [];
+    }
+
+    async approveArticle(id) {
+        if(!id) {
+            throw new Error("Ошибка при согласовании поста");
+        }
+
+        const article = blogModel.updateOne({_id: id}, {$set: {isVisible: true}});
+
+        return article;
+    }
+
+    async deleteArticle(id) {
+        if(!id) {
+            throw new Error("Ошибка при согласовании поста");
+        }
+
+        return await this.delete(id);
     }
 
     async showArticleById(articleId) {
