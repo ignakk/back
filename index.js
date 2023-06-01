@@ -25,8 +25,6 @@ app.use("/api", router);
 
 const start = async () => {
     try {
-        console.log(process.env);
-        console.log('hello');
         await mongoose.connect(process.env.MONGO_URL)
         app.listen(PORT, () => console.log(`Server started on ${PORT} port`))
     } catch (e) {
