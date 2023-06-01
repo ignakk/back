@@ -59,21 +59,12 @@ class AdminService {
         }
     }
 
-    async refresh(refreshToken) {
+    async refresh(refreshToken, userData) {
         if(!refreshToken) {
             throw new Error("Пользователь не авторизован");
         }
 
-        const tokenData = await tokenModel.findOne({refreshToken});
-        const userInfo = TokenService.validateRefreshToken(refreshToken);
-
-        if(!userInfo) {
-            await tokenModel.deleteOne({});
-            res.clearCookie('refreshToken');
-            throw new Error("Пользователь не авторизован");
-        }
-
-        const user = await AdminModel.findById(userInfo.id);
+        const user = await AdminModel.findById(userData.id);
         const modifiedUser = new userDto(user);
 
         const tokens = await TokenService.generateTokens({...modifiedUser});

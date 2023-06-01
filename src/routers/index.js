@@ -21,6 +21,6 @@ router.post("/change/:id", authMiddleware, BlogController.update);
 router.post("/authorization", adminController.authorization);
 router.post("/registration", adminController.registration);
 
-router.get("/refresh", adminController.refresh);
+router.get("/refresh", authMiddleware, adminController.refresh);
 
 export default router;

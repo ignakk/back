@@ -28,7 +28,7 @@ class adminController {
     async refresh(req, res) {
         try {
             const {refreshToken} = req.cookies;
-            const user = await AdminService.refresh(refreshToken);
+            const user = await AdminService.refresh(refreshToken, req.user);
             res.cookie("refreshToken", user.refreshToken, {maxAge: 30*24*60*60*1000});
             res.clearCookie('refreshToken');
             return res.json(user);
