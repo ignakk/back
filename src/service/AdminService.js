@@ -60,11 +60,7 @@ class AdminService {
     }
 
     async refresh(refreshToken, userData) {
-        if(!refreshToken) {
-            throw new Error("Пользователь не авторизован");
-        }
-
-        const user = await AdminModel.findById(userData.id);
+        const user = await AdminModel.findOne({email: userData.email});
         const modifiedUser = new userDto(user);
 
         const tokens = await TokenService.generateTokens({...modifiedUser});
