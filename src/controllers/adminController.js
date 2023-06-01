@@ -18,7 +18,7 @@ class adminController {
         try {
             const {email, password} = req.body;
             const user = await AdminService.registration(email, password);
-            res.cookie("refreshToken", user.refreshToken, {maxAge: 30*24*60*60*1000, httpOnly: true});
+            res.cookie("refreshToken", user.refreshToken, {maxAge: 30*24*60*60*1000});
             return res.json(user);
         } catch (e) {
             res.status(401).json("Произошла ошибка при регистрации");
@@ -29,7 +29,8 @@ class adminController {
         try {
             const {refreshToken} = req.cookies;
             const user = await AdminService.refresh(refreshToken);
-            res.cookie("refreshToken", user.refreshToken, {maxAge: 30*24*60*60*1000, httpOnly: true});
+            res.cookie("refreshToken", user.refreshToken, {maxAge: 30*24*60*60*1000});
+            res.clearCookie('refreshToken');
             return res.json(user);
         } catch (e) {
             res.status(401).json("Пользователь не авторизован " + e.message,);

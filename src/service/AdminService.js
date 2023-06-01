@@ -65,9 +65,11 @@ class AdminService {
         }
 
         const tokenData = await tokenModel.findOne({refreshToken});
+        const userInfo = TokenService.validateRefreshToken(refreshToken);
 
-        if(!tokenData) {
+        if(!userInfo) {
             await tokenModel.deleteOne({});
+            res.clearCookie('refreshToken');
             throw new Error("Пользователь не авторизован");
         }
 
