@@ -27,7 +27,7 @@ class BlogService {
     async showArticlesToModerate(page = 1) {
         const skip = parseInt(page) === 1 ? 0 : parseInt(page) * 8;
 
-        const articles = (await blogModel.find().limit(8).skip(skip));
+        const articles = (await blogModel.find().limit(50).skip(skip));
 
         return articles.length > 0 ? articles.filter((item) => !item.isVisible) : [];
     }
