@@ -50,7 +50,7 @@ class BlogService {
         return await this.delete(id);
     }
 
-    async showArticleById(articleId) {
+    async showArticleById(articleId, isAdmin) {
         const article = await blogModel.findById(articleId);
 
         if(!article) {
@@ -59,7 +59,7 @@ class BlogService {
 
         await blogModel.updateOne({_id: articleId}, {$inc: {viewsCount: 1}});
 
-        if(!article.isVisible) {
+        if(!article.isVisible && !isAdmin) {
             throw new Error("Такой статьи не существует");
         }
 
