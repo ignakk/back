@@ -51,7 +51,7 @@ class BlogService {
         return await this.delete(id);
     }
 
-    async showArticleById(articleId) {
+    async showArticleById(articleId, req) {
         const article = await blogModel.findById(articleId);
 
         if(!article) {
