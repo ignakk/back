@@ -1,5 +1,6 @@
 import { orderByAdapter } from "../adapters/index.js";
 import { blogModel, AdminModel } from "../models/index.js"
+import TokenService from "./TokenService.js";
 
 
 class BlogService {
@@ -50,7 +51,7 @@ class BlogService {
         return await this.delete(id);
     }
 
-    async showArticleById(articleId, isAdmin) {
+    async showArticleById(articleId) {
         const article = await blogModel.findById(articleId);
 
         if(!article) {
@@ -59,11 +60,25 @@ class BlogService {
 
         await blogModel.updateOne({_id: articleId}, {$inc: {viewsCount: 1}});
 
-        if(!article.isVisible && !isAdmin) {
-            throw new Error("Такой статьи не существует");
+        if(article.isVisible) {
+            return article;
         }
 
-        return article;
+        const authHeader = req.headers.authorization;
+
+        if(!authHeader) {
+            throw new Error("Такой статьи не существует");
+        } else {
+            const accesToken = authHeader.split(" ")[1];
+
+            const userData = TokenService.validateAccesToken(accesToken);
+
+            if(!userData.isAdmin) {
+                throw new Error("Такой статьи не существует");
+            }
+
+            return article;
+        }
     }
 
     async delete(articleId) {

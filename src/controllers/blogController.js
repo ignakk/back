@@ -26,7 +26,7 @@ class BlogController {
     async showArticleById(req, res) {
         try {
             const articleId = req.params.id;
-            const article = await BlogService.showArticleById(articleId, req.user.isAdmin);
+            const article = await BlogService.showArticleById(articleId);
             return res.json(article);
         } catch (e) {
             res.status(404).json(e.message);
