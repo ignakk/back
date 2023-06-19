@@ -25,7 +25,7 @@ class BlogService {
     }
 
     async showArticlesToModerate(page = 1) {
-        const skip = (parseInt(page) - 1) * 8;
+        const skip = parseInt(page) === 1 ? 0 : parseInt(page) * 8;
 
         const articles = (await blogModel.find().limit(8).skip(skip));
 
