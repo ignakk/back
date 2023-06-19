@@ -13,7 +13,7 @@ const app = express();
 const PORT = 3333 || process.env.PORT;
 
 const corsOptions = {
-    origin:'https://ignakk.github.io', 
+    origin:'http://z192.pautinaweb.ru', 
     credentials:true,           
     optionSuccessStatus:200
 }
