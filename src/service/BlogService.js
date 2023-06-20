@@ -23,10 +23,10 @@ class BlogService {
         const articles = await blogModel.find().skip(skip).limit(50).sort({ createdAt: orderByAdapter(orderBy) });
 
         if(filterBy) {
-            return articles.length > 0 ? articles.slice(8).filter((item) => item.title.toLowerCase().includes(filterBy.toLowerCase()) && !!item.isVisible) : [];
+            return articles.length > 0 ? articles.filter((item) => item.title.toLowerCase().includes(filterBy.toLowerCase()) && !!item.isVisible) : [];
         }
 
-        return articles.length > 0 ? articles.filter(item => !!item.isVisible).slice(0, 8) : [];
+        return articles.length > 0 ? articles.filter(item => !!item.isVisible) : [];
     }
 
     async showArticlesToModerate(page = 1) {
