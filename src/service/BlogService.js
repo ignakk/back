@@ -26,7 +26,7 @@ class BlogService {
             return articles.length > 0 ? articles.slice(8).filter((item) => item.title.toLowerCase().includes(filterBy.toLowerCase()) && !!item.isVisible) : [];
         }
 
-        return articles.length > 0 ? articles.filter(item => !!item.isVisible) : [];
+        return articles.length > 0 ? articles.filter(item => !!item.isVisible).slice(0, 8) : [];
     }
 
     async showArticlesToModerate(page = 1) {
