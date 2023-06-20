@@ -20,14 +20,13 @@ class BlogService {
     async showAllArticles(page = 1, filterBy = '', orderBy = 'desc') {
         const skip = parseInt(page) === 1 ? 0 : parseInt(page) * 8;
 
-        const articless = await blogModel.find().limit(50).skip(skip).sort({ createdAt: orderByAdapter(orderBy) });
-        const articles = articless.slice(8)
+        const articles = await blogModel.find().skip(skip).limit(50).sort({ createdAt: orderByAdapter(orderBy) });
 
-        if(!!filterBy) {
-            return articles.length > 0 ? articles.filter((item) => item.title.toLowerCase().includes(filterBy.toLowerCase()) && !!item.isVisible) : [];
+        if(filterBy) {
+            return articles.length > 0 ? articles.slice(8).filter((item) => item.title.toLowerCase().includes(filterBy.toLowerCase()) && !!item.isVisible) : [];
         }
 
-        return articles.length > 0 ? articles.filter(item => !!item.isVisible) : [];
+        return articles.length > 0 ? articles.slice(8).filter(item => !!item.isVisible) : [];
     }
 
     async showArticlesToModerate(page = 1) {
