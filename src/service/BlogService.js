@@ -17,8 +17,8 @@ class BlogService {
         }
     }
 
-    async showAllArticles(page, filterBy = '', orderBy = 'desc') {
-        const skip = (parseInt(page) - 1) * 8;
+    async showAllArticles(page = 1, filterBy = '', orderBy = 'desc') {
+        const skip = parseInt(page) === 1 ? 0 : parseInt(page) * 8;
 
         const articles = (await blogModel.find().limit(8).skip(skip).sort({ createdAt: orderByAdapter(orderBy) }));
 
